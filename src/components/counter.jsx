@@ -8,12 +8,14 @@ class Counter extends Component {
     fontWeight: "bold"
   };
   handleIncrement = () => {
-    this.setState({ count: this.state.count + 1 });
+    this.setState(prevState => ({
+      count: prevState.count + 1
+    }));
   };
   handleDecrement = () => {
-    this.setState({
-      count: this.state.count > 0 ? this.state.count - 1 : this.state.count
-    });
+    this.setState(prev => ({
+      count: prev.count > 0 ? prev.count - 1 : prev.count
+    }));
   };
   render() {
     let classes = "badge m-2 badge-";
