@@ -1,44 +1,69 @@
-const movies = [
-  {
+let movies = [{
     _id: 1,
-    title: "test title",
+    name: 'test',
+    title: "test title1",
     genre: "test genre",
-    numberInStock: 6,
+    numberInStock: 2,
     dailyRentalRate: 2.5
   },
   {
     _id: 2,
-    title: "test title",
+    title: "test title2",
+    name: 'test2',
     genre: "genre",
-    numberInStock: 6,
-    dailyRentalRate: 2.5
+    numberInStock: 0,
+    dailyRentalRate: 2.3
   },
   {
     _id: 3,
-    title: "test title",
+    title: "test title3",
+    name: 'test3',
     genre: "test genre",
-    numberInStock: 6,
-    dailyRentalRate: 2.5
+    numberInStock: 10,
+    dailyRentalRate: 2
   },
   {
     _id: 4,
-    title: "test title",
+    name: 'test4',
+    title: "test title4",
     genre: "test genre",
-    numberInStock: 6,
-    dailyRentalRate: 2.5
+    numberInStock: 7,
+    dailyRentalRate: 5
   },
   {
     _id: 5,
-    title: "test title",
+    title: "test title5",
     genre: "test genre",
+    name: 'test5',
     numberInStock: 6,
-    dailyRentalRate: 2.5
+    dailyRentalRate: 3.5
   },
   {
     _id: 6,
-    title: "test title",
+    title: "test title6",
+    name: 'test6',
     genre: "test genre",
     numberInStock: 60,
-    dailyRentalRate: 2
+    dailyRentalRate: 4
   }
 ];
+export function getMovies() {
+  return movies
+}
+export function getMovie(id) {
+  return movies.find(m => m._id === id)
+}
+export function saveMovie(movie) {
+  let dbMovie = movies.find(m => m._id === movie._id) || {}
+  dbMovie.name = movie.name
+  dbMovie.genre = movie.genre
+  dbMovie.numberInStock = movie.numberInStock
+  dbMovie.dailyRentalRate = movie.dailyRentalRate
+  if (!dbMovie._id) {
+    dbMovie._id = movie._id
+  }
+  movies.push(dbMovie)
+}
+export function deleteMovie(id) {
+  movies.pop(id)
+}
