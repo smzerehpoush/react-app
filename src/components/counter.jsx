@@ -1,50 +1,52 @@
 import React, { Component } from "react";
 class Counter extends Component {
-  state = {
-    count: this.props.value || 0
-  };
   styles = {
     fontSize: 20,
     fontWeight: "bold"
   };
-  handleIncrement = () => {
-    this.setState(prevState => ({
-      count: prevState.count + 1
-    }));
-  };
-  handleDecrement = () => {
-    this.setState(prev => ({
-      count: prev.count > 0 ? prev.count - 1 : prev.count
-    }));
-  };
 
   render() {
-    let classes = "badge m-2 badge-";
-    console.log(this.props);
-    classes += this.state.count === 0 ? "warning" : "primary";
+    let badgeClasses = "badge m-2 badge-";
+    badgeClasses += this.props.counter.value === 0 ? "warning" : "primary";
+    let buttonClasses = "btn btn-secondary btn-sm m-2 ";
+    buttonClasses += this.props.counter.value === 0 ? " disabled" : " ";
+    // buttonClasses += 0;
     return (
-      <React.Fragment>
-        <span style={this.styles} className={classes}>
-          {this.formatCount()}
-        </span>
-        <button
-          onClick={() => this.handleIncrement()}
-          className="btn btn-secondary btn-sm m-2"
-        >
-          Increment
-        </button>
-        <button
-          onClick={this.handleDecrement}
-          className="btn btn-secondary btn-sm m-2"
-        >
-          Decrement
-        </button>
-        <br />
-      </React.Fragment>
+      <div className="row">
+        <div className="col-2 m-2">
+          <span style={this.styles} className={badgeClasses}>
+            {this.formatCount()}
+          </span>
+        </div>
+        <div className="col m-2">
+          <button
+            onClick={() => this.props.onIncrement(this.props.counter)}
+            className="btn btn-secondary btn-sm"
+          >
+            +
+          </button>
+          <a
+            // href="#"
+            onClick={() => this.props.onDecrement(this.props.counter)}
+            className={buttonClasses}
+            role="button"
+          >
+            -
+          </a>
+          <button
+            onClick={() => this.props.onDelete(this.props.counter.id)}
+            className="btn btn-danger btn-sm"
+          >
+            X
+          </button>
+
+          <br />
+        </div>
+      </div>
     );
   }
   formatCount() {
-    const { count } = this.state;
+    const count = this.props.counter.value;
     return count === 0 ? "Zero" : count;
   }
 }
