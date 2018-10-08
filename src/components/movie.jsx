@@ -1,19 +1,28 @@
 import React, { Component } from "react";
-import { getMovies, deleteMovie } from "../fakeServices";
+import { getMovies } from "../fakeServices";
 import "bootstrap/dist/css/bootstrap.css";
-
+import Like from "./common/like";
 class Movie extends Component {
   state = {
     movies: getMovies()
   };
-  handleDelete = id => {
-    deleteMovie(id);
-    this.setState((state, props) => {
-      return {
-        movies: this.state.movies.filter(m => m._id !== id)
-      };
+  handleDelete = movie => {
+    this.setState(state => ({
+      movies: state.movies.filter(m => m._id !== movie._id)
+    }));
+  };
+  handleLike = id => {
+    const movies = this.state.movies;
+    movies.forEach(element => {
+      if (element._id === id) {
+        element.liked = element.liked === "true" ? "false" : "true";
+      }
+    });
+    this.setState({
+      movies
     });
   };
+
   render() {
     const count = this.state.movies.length;
     if (count === 0) {
@@ -30,6 +39,7 @@ class Movie extends Component {
               <th>Stock</th>
               <th>Rate</th>
               <th />
+              <th />
             </tr>
           </thead>
           <tbody>
@@ -40,8 +50,14 @@ class Movie extends Component {
                 <td>{movie.numberInStock}</td>
                 <td>{movie.dailyRentalRate}</td>
                 <td>
+                  <Like
+                    liked={movie.liked}
+                    onClick={() => this.handleLike(movie._id)}
+                  />
+                </td>
+                <td>
                   <button
-                    onClick={() => this.handleDelete(movie._id)}
+                    onClick={() => this.handleDelete(movie)}
                     className="btn btn-danger btn-sm"
                   >
                     delete
