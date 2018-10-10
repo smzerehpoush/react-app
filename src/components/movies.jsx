@@ -1,30 +1,9 @@
 import React, { Component } from "react";
-import { getMovies } from "../fakeServices";
 import "bootstrap/dist/css/bootstrap.css";
 import Like from "./common/like";
-class Movie extends Component {
-  state = {
-    movies: getMovies()
-  };
-  handleDelete = movie => {
-    this.setState(state => ({
-      movies: state.movies.filter(m => m._id !== movie._id)
-    }));
-  };
-  handleLike = id => {
-    const movies = this.state.movies;
-    movies.forEach(element => {
-      if (element._id === id) {
-        element.liked = element.liked === "true" ? "false" : "true";
-      }
-    });
-    this.setState({
-      movies
-    });
-  };
-
+class Movies extends Component {
   render() {
-    const count = this.state.movies.length;
+    const count = this.props.movies.length;
     if (count === 0) {
       return <p>There are no movies in table</p>;
     }
@@ -34,6 +13,7 @@ class Movie extends Component {
         <table className="table">
           <thead>
             <tr>
+              <th>Row</th>
               <th>Title</th>
               <th>Genre</th>
               <th>Stock</th>
@@ -43,8 +23,9 @@ class Movie extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.state.movies.map(movie => (
+            {this.props.movies.map(movie => (
               <tr key={movie._id}>
+                <td>{movie._id}</td>
                 <td>{movie.title}</td>
                 <td>{movie.genre}</td>
                 <td>{movie.numberInStock}</td>
@@ -52,12 +33,12 @@ class Movie extends Component {
                 <td>
                   <Like
                     liked={movie.liked}
-                    onClick={() => this.handleLike(movie._id)}
+                    onClick={() => this.props.onLike(movie._id)}
                   />
                 </td>
                 <td>
                   <button
-                    onClick={() => this.handleDelete(movie)}
+                    onClick={() => this.props.onDelete(movie._id)}
                     className="btn btn-danger btn-sm"
                   >
                     delete
@@ -72,4 +53,4 @@ class Movie extends Component {
   }
 }
 
-export default Movie;
+export default Movies;

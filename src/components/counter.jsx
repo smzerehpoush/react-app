@@ -4,13 +4,11 @@ class Counter extends Component {
     fontSize: 20,
     fontWeight: "bold"
   };
-
   render() {
     let badgeClasses = "badge m-2 badge-";
     badgeClasses += this.props.counter.value === 0 ? "warning" : "primary";
     let buttonClasses = "btn btn-secondary btn-sm m-2 ";
     buttonClasses += this.props.counter.value === 0 ? " disabled" : " ";
-    // buttonClasses += 0;
     return (
       <div className="row">
         <div className="col-2 m-2">
@@ -26,7 +24,6 @@ class Counter extends Component {
             +
           </button>
           <a
-            // href="#"
             onClick={() => this.props.onDecrement(this.props.counter)}
             className={buttonClasses}
             role="button"
