@@ -55,10 +55,6 @@ class Vidly extends Component {
           onDelete={this.handleDelete}
           onLike={this.handleLike}
           movies={movies}
-          // movies={movies.slice(
-          //   (currentPage - 1) * pageSize,
-          //   currentPage * pageSize
-          // )}
         />
         <Pagination
           pages={pages}
