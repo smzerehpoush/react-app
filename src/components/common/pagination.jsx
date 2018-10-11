@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import "font-awesome/css/font-awesome.min.css";
-import PropTypes from "prop-types";
+// import "font-awesome/css/font-awesome.min.css";
+// import PropTypes from "prop-types";
 class Pagination extends Component {
   render() {
     const { pages, currentPage } = this.props;

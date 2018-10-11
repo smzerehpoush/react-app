@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import "font-awesome/css/font-awesome.min.css";
 
 class Like extends Component {
   render() {
@@ -8,7 +7,7 @@ class Like extends Component {
     return (
       <i
         style={{ cursor: "pointer" }}
-        onClick={this.props.onClick}
+        onClick={() => this.props.onClick()}
         className={likeClassName}
         aria-hidden="true"
       />
