@@ -5,7 +5,6 @@ import { getMovies } from "../services/fakeMovieServices";
 import { getGenres } from "../services/fakeGenreServices";
 import _ from "lodash";
 import paginate from "../utils/paginate";
-import paginate from "../utils/paginate";
 import ListGroup from "./common/listGroup";
 class Vidly extends Component {
   state = {
