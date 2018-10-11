@@ -1,19 +1,35 @@
 import React, { Component } from "react";
 class ListGroup extends Component {
   render() {
-    const { items, onItemSelect, activeItem } = this.props;
+    const {
+      items,
+      onItemSelect,
+      activeItem,
+      idProperty,
+      valueProperty
+    } = this.props;
     return (
       <ul className="list-group">
+        <a
+          key="allGenres"
+          className={
+            "list-group-item list-group-item-action m-1" +
+            ("allGenres" === activeItem ? " active" : "")
+          }
+          onClick={() => onItemSelect({ _id: "allGenres" })}
+        >
+          All Genres
+        </a>
         {items.map(item => (
           <a
-            key={item._id}
+            key={item[idProperty]}
             className={
               "list-group-item list-group-item-action m-1" +
-              (item._id === activeItem ? " active" : "")
+              (item[idProperty] === activeItem ? " active" : "")
             }
             onClick={() => onItemSelect(item)}
           >
-            {item.value}
+            {item[valueProperty]}
           </a>
         ))}
       </ul>

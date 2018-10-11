@@ -9,7 +9,7 @@ class Movies extends Component {
     }
     return (
       <React.Fragment>
-        <p>showing {count} movies in the database</p>
+        {/* <p>showing {count} movies in the database</p> */}
         <table className="table">
           <thead>
             <tr>

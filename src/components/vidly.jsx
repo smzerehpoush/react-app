@@ -8,11 +8,14 @@ import paginate from "../utils/paginate";
 import ListGroup from "./common/listGroup";
 class Vidly extends Component {
   state = {
-    movies: getMovies(),
-    genres: getGenres(),
+    movies: [],
+    genres: [],
     pageSize: 2,
     currentPage: 1
   };
+  componentDidMount() {
+    this.setState({ movies: getMovies(), genres: getGenres() });
+  }
   handleDelete = id => {
     const movies = this.state.movies.filter(m => m._id !== id);
     console.log("before1", movies);
@@ -46,56 +49,48 @@ class Vidly extends Component {
       ? (currentPage = pages[0])
       : currentPage;
   };
-  formatGenres = genres => {
-    for (let i = 0; i < genres.length; i++) {
-      if (genres[i].hasOwnProperty("genre")) {
-        genres[i]["value"] = genres[i]["genre"];
-        delete genres[i]["genre"];
-      }
-    }
-    return genres;
-  };
+
   filterMoviesByGenre = movies => {
     const { currentGenre } = this.state;
-    return currentGenre === undefined
+    return currentGenre === undefined || currentGenre._id === "allGenres"
       ? movies
-      : movies.filter(m => m.genre === currentGenre.value);
+      : movies.filter(m => m.genre === currentGenre.genre);
   };
   render() {
-    const {
-      pageSize,
-      movies: allMovies,
-      genres: allGenres,
-      currentGenre
-    } = this.state;
+    const { pageSize, movies: allMovies, genres, currentGenre } = this.state;
     let movies = this.filterMoviesByGenre(allMovies);
     let pagesCount = movies.length / pageSize;
     const pages = (_.pages = _.range(1, pagesCount + 1));
 
     const currentPage = this.getCurrentPage(pages);
     movies = paginate(movies, currentPage, pageSize);
-    const genres = this.formatGenres(allGenres);
 
     return movies.length === 0 ? (
       "No Data To Show!"
     ) : (
-      <React.Fragment>
-        <Movies
-          onDelete={this.handleDelete}
-          onLike={this.handleLike}
-          movies={movies}
-        />
-        <Pagination
-          pages={pages}
-          currentPage={currentPage}
-          onPageChange={this.handlePageChange}
-        />
-        <ListGroup
-          items={genres}
-          activeItem={currentGenre === undefined ? "" : currentGenre._id}
-          onItemSelect={this.handleItemSelect}
-        />
-      </React.Fragment>
+      <div className="row p-2">
+        <div className="col-3">
+          <ListGroup
+            items={genres}
+            idProperty="_id"
+            valueProperty="genre"
+            activeItem={currentGenre === undefined ? "" : currentGenre._id}
+            onItemSelect={this.handleItemSelect}
+          />
+        </div>
+        <div className="col">
+          <Movies
+            onDelete={this.handleDelete}
+            onLike={this.handleLike}
+            movies={movies}
+          />
+          <Pagination
+            pages={pages}
+            currentPage={currentPage}
+            onPageChange={this.handlePageChange}
+          />
+        </div>
+      </div>
     );
   }
 }
