@@ -10,16 +10,6 @@ class ListGroup extends Component {
     } = this.props;
     return (
       <ul className="list-group">
-        <a
-          key="allGenres"
-          className={
-            "list-group-item list-group-item-action m-1" +
-            ("allGenres" === activeItem ? " active" : "")
-          }
-          onClick={() => onItemSelect({ _id: "allGenres" })}
-        >
-          All Genres
-        </a>
         {items.map(item => (
           <a
             key={item[idProperty]}
@@ -36,5 +26,8 @@ class ListGroup extends Component {
     );
   }
 }
-
+ListGroup.defaultProperties = {
+  idProperty: "_id",
+  valueProperty: "name"
+};
 export default ListGroup;
