@@ -1,55 +1,45 @@
 import React, { Component } from "react";
-// import "bootstrap/dist/css/bootstrap.css";
 import Like from "./common/like";
+import Table from "./common/table";
 class MoviesTable extends Component {
-  render() {
-    const { movies, onSort } = this.props;
-    const count = movies.length;
-    if (count === 0) {
-      return <p>There are no movies in table</p>;
+  columns = [
+    { path: "row", lable: "row" },
+    { path: "title", lable: "Title" },
+    { path: "genre", lable: "Genre" },
+    { path: "numberInStock", lable: "Stock" },
+    { path: "dailyRentalRate", lable: "Rent" },
+    {
+      key: "like",
+      content: movie => (
+        <Like
+          liked={movie.liked}
+          onClick={() => this.props.onLike(movie._id)}
+        />
+      )
+    },
+    {
+      key: "delete",
+      content: movie => (
+        <button
+          onClick={() => this.props.onDelete(movie._id)}
+          className="btn btn-danger btn-sm"
+        >
+          delete
+        </button>
+      )
     }
-    return (
-      <React.Fragment>
-        {/* <p>showing {count} movies in the database</p> */}
-        <table className="table">
-          <thead>
-            <tr>
-              <th onClick={() => onSort("row")}>Row</th>
-              <th onClick={() => onSort("title")}>Title</th>
-              <th onClick={() => onSort("genre")}>Genre</th>
-              <th onClick={() => onSort("numberInStock")}>Stock</th>
-              <th onClick={() => onSort("dailyRentalRate")}>Rate</th>
-              <th />
-              <th />
-            </tr>
-          </thead>
-          <tbody>
-            {this.props.movies.map(movie => (
-              <tr key={movie._id}>
-                <td>{movie.row}</td>
-                <td>{movie.title}</td>
-                <td>{movie.genre}</td>
-                <td>{movie.numberInStock}</td>
-                <td>{movie.dailyRentalRate}</td>
-                <td>
-                  <Like
-                    liked={movie.liked}
-                    onClick={() => this.props.onLike(movie._id)}
-                  />
-                </td>
-                <td>
-                  <button
-                    onClick={() => this.props.onDelete(movie._id)}
-                    className="btn btn-danger btn-sm"
-                  >
-                    delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </React.Fragment>
+  ];
+  render() {
+    const { onSort, sortColumn, movies } = this.props;
+    return movies.length === 0 ? (
+      <p>There are no movies in table</p>
+    ) : (
+      <Table
+        columns={this.columns}
+        data={movies}
+        sortColumn={sortColumn}
+        onSort={onSort}
+      />
     );
   }
 }

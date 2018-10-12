@@ -6,7 +6,6 @@ import { getGenres } from "../services/fakeGenreServices";
 import _ from "lodash";
 import paginate from "../utils/paginate";
 import ListGroup from "./common/listGroup";
-
 class Movies extends Component {
   state = {
     movies: [],
@@ -50,17 +49,7 @@ class Movies extends Component {
       currentGenre: currentGenre === item ? undefined : item
     });
   };
-  handleSort = path => {
-    const { sortColumn } = this.state;
-    console.log("before", sortColumn.order);
-    if (sortColumn.path === path) {
-      console.log(path);
-      sortColumn.order = sortColumn.order === "asc" ? "desc" : "asc";
-    } else {
-      sortColumn.order = "asc";
-      sortColumn.path = path;
-    }
-    console.log("after", sortColumn.order);
+  handleSort = sortColumn => {
     this.setState({ sortColumn });
   };
   getCurrentPage = pages => {
@@ -70,7 +59,7 @@ class Movies extends Component {
       : currentPage;
   };
 
-  filterMoviesByGenre = movies => {
+  filterMovies = movies => {
     let counter = 0;
     const { currentGenre } = this.state;
     return currentGenre === undefined || currentGenre._id === "allGenres"
@@ -83,23 +72,24 @@ class Movies extends Component {
           return element;
         });
   };
-  render() {
-    const {
-      pageSize,
-      movies: allMovies,
-      genres,
-      currentGenre,
-      sortColumn
-    } = this.state;
-    const filteredMovies = this.filterMoviesByGenre(allMovies);
+  sortMovies = (movies, sortColumn) => {
+    let sortedMovies = _.sortBy(movies, [sortColumn.path]);
+    if (sortColumn.order === "desc") sortedMovies.reverse();
+    return sortedMovies;
+  };
+  getPagedData = () => {
+    const { pageSize, movies: allMovies, sortColumn } = this.state;
+    const filteredMovies = this.filterMovies(allMovies);
     let pagesCount = filteredMovies.length / pageSize;
     const pages = (_.pages = _.range(1, pagesCount + 1));
-    console.log(sortColumn);
-    let sortedMovies = _.sortBy(filteredMovies, [sortColumn.path]);
-    if (sortColumn.order === "desc") sortedMovies.reverse();
+    let sortedMovies = this.sortMovies(filteredMovies, sortColumn);
     const currentPage = this.getCurrentPage(pages);
     const movies = paginate(sortedMovies, currentPage, pageSize);
-
+    return { movies, pages, currentPage };
+  };
+  render() {
+    const { genres, currentGenre, sortColumn } = this.state;
+    const { movies, pages, currentPage } = this.getPagedData();
     return movies.length === 0 ? (
       "No Data To Show!"
     ) : (
@@ -116,6 +106,7 @@ class Movies extends Component {
           </div>
           <div className="col">
             <MoviesTable
+              sortColumn={sortColumn}
               onDelete={this.handleDelete}
               onLike={this.handleLike}
               movies={movies}
