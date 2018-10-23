@@ -4,5 +4,11 @@ import "bootstrap/dist/css/bootstrap.css";
 import "font-awesome/css/font-awesome.min.css";
 import "./index.css";
 // import App from "./App";
+import { BrowserRouter } from "react-router-dom";
 import Vidly from "./components/vidly";
-ReactDOM.render(<Vidly />, document.getElementById("root"));
+ReactDOM.render(
+  <BrowserRouter>
+    <Vidly />
+  </BrowserRouter>,
+  document.getElementById("root")
+);

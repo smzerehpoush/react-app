@@ -52,6 +52,7 @@ class Movies extends Component {
   handleSort = sortColumn => {
     this.setState({ sortColumn });
   };
+
   getCurrentPage = pages => {
     let { currentPage } = this.state;
     return pages.indexOf(currentPage) === -1

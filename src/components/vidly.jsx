@@ -1,6 +1,11 @@
 import React, { Component } from "react";
+import { Route, Redirect, Switch } from "react-router-dom";
 import Movies from "./movies";
 import NavBar from "./common/navbar";
+import Customers from "./customers";
+import Rentals from "./rentals.";
+import MovieForm from "./movieForm";
+import NotFound from "./notFound";
 class Vidly extends Component {
   state = {};
   handleSelect = activeItem => {
@@ -8,9 +13,9 @@ class Vidly extends Component {
   };
   render() {
     const items = [
-      { _id: 1, name: "Movies" },
-      { _id: 2, name: "Customers" },
-      { _id: 3, name: "Rentals" }
+      { _id: 1, name: "Movies", path: "/movies" },
+      { _id: 2, name: "Customers", path: "/customers" },
+      { _id: 3, name: "Rentals", path: "/rentals" }
     ];
     const { activeItem } = this.state;
     return (
@@ -20,7 +25,17 @@ class Vidly extends Component {
           onSelect={this.handleSelect}
           activeItem={activeItem}
         />
-        <Movies />
+        <div>
+          <Switch>
+            <Route path="/movies/:id" component={MovieForm} />
+            <Route path="/movies" component={Movies} />
+            <Route path="/customers" component={Customers} />
+            <Route path="/rentals" component={Rentals} />
+            <Route path="/not-found" component={NotFound} />
+            <Redirect from="/" exact to="/movies" />
+            <Redirect to="/not-found" />
+          </Switch>
+        </div>
       </React.Fragment>
     );
   }

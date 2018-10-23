@@ -1,24 +1,29 @@
 import React, { Component } from "react";
+import { NavLink, Link } from "react-router-dom";
 class NavBar extends Component {
   render() {
     const { items, activeItem, onSelect } = this.props;
     return (
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
-        <a className="navbar-brand clickable">Vidly</a>
+        <Link className="navbar-brand clickable" to="/">
+          Vidly
+        </Link>
         <div className="collapse navbar-collapse">
           <ul className="navbar-nav mr-auto">
             {items.map(item => (
               <li
+                key={item._id}
                 className={
                   "nav-item " + (item._id === activeItem ? "active" : "")
                 }
               >
-                <a
-                  className="nav-link clickable"
+                <NavLink
+                  className="nav-item nav-link clickable"
+                  to={`${item.path}`}
                   onClick={() => onSelect(item._id)}
                 >
                   {item.name}
-                </a>
+                </NavLink>
               </li>
             ))}
           </ul>
