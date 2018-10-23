@@ -6,6 +6,8 @@ import Customers from "./customers";
 import Rentals from "./rentals.";
 import MovieForm from "./movieForm";
 import NotFound from "./notFound";
+import LoginForm from "./loginForm";
+
 class Vidly extends Component {
   state = {};
   handleSelect = activeItem => {
@@ -15,11 +17,12 @@ class Vidly extends Component {
     const items = [
       { _id: 1, name: "Movies", path: "/movies" },
       { _id: 2, name: "Customers", path: "/customers" },
-      { _id: 3, name: "Rentals", path: "/rentals" }
+      { _id: 3, name: "Rentals", path: "/rentals" },
+      { _id: 4, name: "Login", path: "/login" }
     ];
     const { activeItem } = this.state;
     return (
-      <React.Fragment>
+      <div>
         <NavBar
           items={items}
           onSelect={this.handleSelect}
@@ -27,6 +30,7 @@ class Vidly extends Component {
         />
         <div>
           <Switch>
+            <Route path="/login" component={LoginForm} />
             <Route path="/movies/:id" component={MovieForm} />
             <Route path="/movies" component={Movies} />
             <Route path="/customers" component={Customers} />
@@ -36,7 +40,7 @@ class Vidly extends Component {
             <Redirect to="/not-found" />
           </Switch>
         </div>
-      </React.Fragment>
+      </div>
     );
   }
 }
