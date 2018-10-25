@@ -7,6 +7,7 @@ import Rentals from "./rentals.";
 import MovieForm from "./movieForm";
 import NotFound from "./notFound";
 import LoginForm from "./loginForm";
+import Chat from './chat';
 
 class Vidly extends Component {
   state = {};
@@ -18,7 +19,8 @@ class Vidly extends Component {
       { _id: 1, name: "Movies", path: "/movies" },
       { _id: 2, name: "Customers", path: "/customers" },
       { _id: 3, name: "Rentals", path: "/rentals" },
-      { _id: 4, name: "Login", path: "/login" }
+      { _id: 4, name: "Login", path: "/login" },
+      { _id: 5, name: "Chat", path: "/chat" }
     ];
     const { activeItem } = this.state;
     return (
@@ -36,6 +38,7 @@ class Vidly extends Component {
             <Route path="/customers" component={Customers} />
             <Route path="/rentals" component={Rentals} />
             <Route path="/not-found" component={NotFound} />
+            <Route path="/chat" component={Chat} />
             <Redirect from="/" exact to="/movies" />
             <Redirect to="/not-found" />
           </Switch>
