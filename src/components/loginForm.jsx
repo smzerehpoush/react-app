@@ -1,43 +1,66 @@
 import React, { Component } from "react";
+import Input from "./common/input";
 class LoginForm extends Component {
-  username = React.createRef();
-  //   password = React.createRef();
+  state = {
+    account: { username: "", password: "" },
+    errors: {
+      username: "",
+      password: ""
+    }
+  };
+  validate = () => {
+    const errors = {};
+    const { account } = this.state;
+    if (account.username.trim().length === 0)
+      errors.username = "Username is required!";
+    if (account.password.trim().length === 0)
+      errors.password = "Password is required!";
+    return errors;
+    // return Object.keys(errors).length === 0 ? null : errors;
+  };
+  validateProperty = ({ name, value }) => {
+    if (name === "username") {
+      if (value.trim().length === 0) return "username is required!";
+    } else if (name === "password") {
+      if (value.trim().length === 0) return "password is required!";
+    }
+  };
   handleSubmit = e => {
     e.preventDefault();
-    console.log(this.username.current.value);
-
-    console.log("submitted");
+    const errors = this.validate();
+    this.setState({ errors });
   };
-  componentDidMount() {
-    this.username.current.focus();
-  }
+  handleChange = ({ currentTarget: input }) => {
+    const account = { ...this.state.account };
+    const errors = { ...this.state.errors };
+    const errorMessage = this.validateProperty(input);
+    if (errorMessage) errors[input.name] = errorMessage;
+    else delete errors[input.name];
+    account[input.name] = input.value;
+    this.setState({ account, errors });
+  };
+  componentDidMount() {}
   render() {
+    const { account, errors } = this.state;
     return (
       <div className="m-5">
         <h1>Login</h1>
         <form onSubmit={this.handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="username">Username</label>
-            <input
-              autoFocus
-              ref={this.username}
-              type="text"
-              className="form-control"
-              id="username"
-            />
-            {/* <small id="emailHelp" className="form-text text-muted">
-              we'll never share your information
-            </small> */}
-          </div>
-          <div className="form-group">
-            <label htmlFor="passwordInput">Password</label>
-            <input
-              ref={this.password}
-              type="Password"
-              className="form-control"
-              id="passwordInput"
-            />
-          </div>
+          <Input
+            name="username"
+            label="Username"
+            value={account.username}
+            onChange={this.handleChange}
+            errorMessage={errors.username}
+          />
+          <Input
+            name="password"
+            label="Password"
+            value={account.password}
+            onChange={this.handleChange}
+            type="password"
+            errorMessage={errors.password}
+          />
           <button className="btn btn-primary">Login</button>
         </form>
       </div>
