@@ -7,7 +7,7 @@ import Rentals from "./rentals.";
 import MovieForm from "./movieForm";
 import NotFound from "./notFound";
 import LoginForm from "./loginForm";
-import Chat from './chat';
+import Chat from "./chat";
 
 class Vidly extends Component {
   state = {};
