@@ -58,13 +58,15 @@ export function getMovies() {
   return movies;
 }
 export function getMovie(id) {
-  return movies.find(m => m._id === id);
+  return movies.find(m => m._id === Number(id));
 }
 export function saveMovie(movie) {
   let dbMovie = movies.find(m => m._id === movie._id) || {};
+  dbMovie.title = movie.name;
   dbMovie.name = movie.name;
   dbMovie.genre = movie.genre;
   dbMovie.numberInStock = movie.numberInStock;
+  dbMovie.liked = movie.liked;
   dbMovie.dailyRentalRate = movie.dailyRentalRate;
   if (!dbMovie._id) {
     dbMovie._id = movie._id;
@@ -79,5 +81,5 @@ export function getNewMovieId() {
   movies.forEach(item => {
     maxId = maxId > item._id ? maxId : item._id;
   });
-  return maxId;
+  return ++maxId;
 }
