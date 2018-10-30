@@ -1,17 +1,16 @@
 import React, { Component } from "react";
 import { Route, Redirect, Switch } from "react-router-dom";
-import { getMovies } from "../services/fakeMovieServices";
+import { getMovies, saveMovie } from "../services/fakeMovieServices";
 import { getGenres } from "../services/fakeGenreServices";
 import Movies from "./movies";
 import NavBar from "./common/navbar";
 import Customers from "./customers";
 import Rentals from "./rentals.";
-import MovieForm from "./movieForm";
 import NotFound from "./notFound";
 import LoginForm from "./loginForm";
 import Chat from "./chat";
 import RegisterForm from "./registerForm";
-import AddMovie from "./addMovie";
+import MovieForm from "./movieForm";
 
 class Vidly extends Component {
   state = {
@@ -70,7 +69,7 @@ class Vidly extends Component {
       <div>
         <NavBar
           items={items}
-          onSelect={this.handleSelect}
+          onSelect={this.handleItemSelect}
           activeItem={activeItem}
         />
         <div>
@@ -80,14 +79,23 @@ class Vidly extends Component {
             <Route
               path="/movies/new"
               render={props => (
-                <AddMovie
+                <MovieForm
                   {...props}
                   genres={genres}
                   onAddMovie={this.handleAddMovie}
                 />
               )}
             />
-            <Route path="/movies/:id" component={MovieForm} />
+            <Route
+              path="/movies/:id"
+              render={props => (
+                <MovieForm
+                  {...props}
+                  genres={genres}
+                  onAddMovie={this.handleAddMovie}
+                />
+              )}
+            />
             <Route
               path="/movies"
               render={() => (
