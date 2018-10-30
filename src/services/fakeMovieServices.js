@@ -1,4 +1,5 @@
-let movies = [{
+let movies = [
+  {
     _id: 1,
     liked: "false",
     name: "test",
@@ -72,4 +73,11 @@ export function saveMovie(movie) {
 }
 export function deleteMovie(id) {
   return movies.filter(m => m._id !== id);
+}
+export function getNewMovieId() {
+  let maxId = movies[0]._id;
+  movies.forEach(item => {
+    maxId = maxId > item._id ? maxId : item._id;
+  });
+  return maxId;
 }
