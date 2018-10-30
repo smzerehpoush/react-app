@@ -1,44 +1,17 @@
 import React, { Component } from "react";
 import Pagination from "./common/pagination";
 import MoviesTable from "./moviesTable";
-import { getMovies } from "../services/fakeMovieServices";
-import { getGenres } from "../services/fakeGenreServices";
 import _ from "lodash";
 import paginate from "../utils/paginate";
 import ListGroup from "./common/listGroup";
+import { Link } from "react-router-dom";
 class Movies extends Component {
   state = {
-    movies: [],
-    genres: [],
     pageSize: 4,
     currentPage: 1,
     sortColumn: { path: "title", order: "asc" }
   };
-  componentDidMount() {
-    const genres = [
-      { genre: "All Genres", _id: "allGenres", key: "allGenres" },
-      ...getGenres()
-    ];
-    this.setState({ movies: getMovies(), genres });
-  }
-  handleDelete = id => {
-    const movies = this.state.movies.filter(m => m._id !== id);
-    this.setState({
-      movies
-    });
-  };
-  handleLike = id => {
-    const movies = this.state.movies;
 
-    movies.forEach(element => {
-      if (element._id === id) {
-        element.liked = element.liked === "true" ? "false" : "true";
-      }
-    });
-    this.setState({
-      movies
-    });
-  };
   handlePageChange = page => {
     this.setState({ currentPage: page });
   };
@@ -79,7 +52,8 @@ class Movies extends Component {
     return sortedMovies;
   };
   getPagedData = () => {
-    const { pageSize, movies: allMovies, sortColumn } = this.state;
+    const { movies: allMovies } = this.props;
+    const { pageSize, sortColumn } = this.state;
     const filteredMovies = this.filterMovies(allMovies);
     let pagesCount = filteredMovies.length / pageSize;
     const pages = (_.pages = _.range(1, pagesCount + 1));
@@ -89,7 +63,8 @@ class Movies extends Component {
     return { movies, pages, currentPage };
   };
   render() {
-    const { genres, currentGenre, sortColumn } = this.state;
+    const { genres, onLike, onDelete } = this.props;
+    const { currentGenre, sortColumn } = this.state;
     const { movies, pages, currentPage } = this.getPagedData();
     return movies.length === 0 ? (
       "No Data To Show!"
@@ -106,10 +81,13 @@ class Movies extends Component {
             />
           </div>
           <div className="col">
+            <Link className="btn btn-primary" to="/movies/new">
+              New Movie
+            </Link>
             <MoviesTable
               sortColumn={sortColumn}
-              onDelete={this.handleDelete}
-              onLike={this.handleLike}
+              onDelete={onDelete}
+              onLike={onLike}
               movies={movies}
               onSort={this.handleSort}
             />
