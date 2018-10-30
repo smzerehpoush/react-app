@@ -26,12 +26,12 @@ class Vidly extends Component {
     this.setState({ movies: getMovies(), genres });
   }
 
-  handleSelect = activeItem => {
+  handleItemSelect = activeItem => {
     this.setState({ activeItem });
   };
   handleAddMovie = movie => {
-    const movies = [...this.state.movies];
-    movies.push(movie);
+    saveMovie(movie);
+    const movies = getMovies();
     this.setState({ movies });
   };
   handleDelete = id => {
