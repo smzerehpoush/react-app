@@ -15,11 +15,11 @@ class Movies extends Component {
   handlePageChange = page => {
     this.setState({ currentPage: page });
   };
-  handleItemSelect = item => {
+  handleGenreSelect = genre => {
     const { currentGenre } = this.state;
     this.setState({
       currentPage: 1,
-      currentGenre: currentGenre === item ? undefined : item
+      currentGenre: currentGenre === genre ? undefined : genre
     });
   };
   handleSort = sortColumn => {
