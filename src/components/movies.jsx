@@ -36,12 +36,14 @@ class Movies extends Component {
   filterMovies = movies => {
     let counter = 0;
     const { currentGenre } = this.state;
-    return currentGenre === undefined || currentGenre._id === "allGenres"
+    console.log("currentGenre", currentGenre);
+    console.log("movie genre", movies["0"]);
+    return currentGenre === undefined || currentGenre.key === "allGenres"
       ? movies.map(element => {
           element.row = ++counter;
           return element;
         })
-      : movies.filter(m => m.genre === currentGenre.genre).map(element => {
+      : movies.filter(m => m.genre._id === currentGenre._id).map(element => {
           element.row = ++counter;
           return element;
         });
@@ -75,9 +77,9 @@ class Movies extends Component {
             <ListGroup
               items={genres}
               idProperty="_id"
-              valueProperty="genre"
-              activeItem={currentGenre === undefined ? "" : currentGenre._id}
-              onItemSelect={this.handleItemSelect}
+              valueProperty="name"
+              activeItem={currentGenre ? currentGenre._id : ""}
+              onItemSelect={this.handleGenreSelect}
             />
           </div>
           <div className="col">
