@@ -4,10 +4,10 @@ import "bootstrap/dist/css/bootstrap.css";
 import "font-awesome/css/font-awesome.min.css";
 import "./index.css";
 import { BrowserRouter } from "react-router-dom";
-import Vidly from "./components/vidly";
+import App from "./App";
 ReactDOM.render(
   <BrowserRouter>
-    <Vidly />
+    <App />
   </BrowserRouter>,
   document.getElementById("root")
 );
