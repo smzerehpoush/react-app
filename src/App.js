@@ -1,67 +1,105 @@
 import React, { Component } from "react";
-import NavBar from "./components/navbar";
-import Counters from "./components/counters";
+import { Route, Redirect, Switch } from "react-router-dom";
+import { getMovies, saveMovie } from "./services/fakeMovieService";
+import { getGenres } from "./services/fakeGenreService";
+import Movies from "./components/movies";
+import NavBar from "./components/common/navbar";
+import Customers from "./components/customers";
+import Rentals from "./components/rentals.";
+import NotFound from "./components/notFound";
+import LoginForm from "./components/loginForm";
+import Chat from "./components/chat";
+import RegisterForm from "./components/registerForm";
+import MovieForm from "./components/movieForm";
+
 class App extends Component {
   state = {
-    counters: [
-      { id: 1, value: 0 },
-      { id: 2, value: 0 },
-      { id: 3, value: 0 },
-      { id: 4, value: 0 }
-    ]
+    movies: [],
+    genres: []
   };
-  handleDelete = counterId => {
-    console.log("Event Handler Called ", counterId);
-    this.setState({
-      counters: this.state.counters.filter(c => c.id !== counterId)
-    });
-  };
-  handleReset = () => {
-    const counters = this.state.counters.map(c => {
-      c.value = 0;
-      return c;
-    });
-    this.setState({ counters });
-  };
-  handleIncrement = counter => {
-    const counters = this.state.counters;
-    counters.forEach(element => {
-      if (element.id === counter.id) {
-        element.value += 1;
-      }
-    });
 
+  componentDidMount() {
+    const genres = [
+      { name: "All Genres", _id: "5b21ca3eeb7f6fbccd471ff8", key: "allGenres" },
+      ...getGenres()
+    ];
+    this.setState({ movies: getMovies(), genres });
+  }
+
+  handleItemSelect = activeItem => {
+    this.setState({ activeItem });
+  };
+  handleAddMovie = movie => {
+    saveMovie(movie);
+    const movies = getMovies();
+    this.setState({ movies });
+  };
+  handleDelete = id => {
+    const dbMovies = [...this.state.movies];
+
+    const movies = dbMovies.filter(m => m._id !== id);
     this.setState({
-      counters
+      movies
     });
   };
-  handleDecrement = counter => {
-    const counters = this.state.counters;
-    counters.forEach(element => {
-      if (element.id === counter.id) {
-        element.value = element.value > 0 ? element.value - 1 : element.value;
+  handleLike = id => {
+    const movies = this.state.movies;
+
+    movies.forEach(element => {
+      if (element._id === id) {
+        element.liked = element.liked === "true" ? "false" : "true";
       }
     });
     this.setState({
-      counters
+      movies
     });
   };
   render() {
+    const items = [
+      { _id: 1, name: "Movies", path: "/movies" },
+      { _id: 2, name: "Customers", path: "/customers" },
+      { _id: 3, name: "Rentals", path: "/rentals" },
+      { _id: 4, name: "Chat", path: "/chat" },
+      { _id: 5, name: "Login", path: "/login" },
+      { _id: 6, name: "Register", path: "/register" }
+    ];
+    const { movies, genres } = this.state;
+    const { activeItem } = this.state;
     return (
-      <React.Fragment>
+      <div>
         <NavBar
-          countersCount={this.state.counters.filter(c => c.value > 0).length}
+          items={items}
+          onSelect={this.handleItemSelect}
+          activeItem={activeItem}
         />
-        <main className="container">
-          <Counters
-            counters={this.state.counters}
-            onReset={this.handleReset}
-            onDelete={this.handleDelete}
-            onIncrement={this.handleIncrement}
-            onDecrement={this.handleDecrement}
-          />
-        </main>
-      </React.Fragment>
+        <div>
+          <Switch>
+            <Route path="/login" component={LoginForm} />
+            <Route path="/register" component={RegisterForm} />
+            <Route
+              path="/movies/:id"
+              render={props => <MovieForm {...props} />}
+            />
+            <Route
+              path="/movies"
+              render={() => (
+                <Movies
+                  movies={movies}
+                  genres={genres}
+                  onLike={this.handleLike}
+                  onDelete={this.handleDelete}
+                />
+              )}
+            />
+            <Route path="/customers" component={Customers} />
+            <Route path="/rentals" component={Rentals} />
+            <Route path="/not-found" component={NotFound} />
+            <Route path="/chat" component={Chat} />
+            <Redirect from="/" exact to="/movies" />
+            <Redirect to="/not-found" />
+          </Switch>
+        </div>
+      </div>
     );
   }
 }
