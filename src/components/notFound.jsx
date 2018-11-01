@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 class NotFound extends Component {
-  handleSave = () => {
+  handleClick = () => {
     this.props.history.push("/movies");
   };
   render() {
@@ -9,7 +9,7 @@ class NotFound extends Component {
         <h1> Not found</h1>
         <button
           className="btn btn-secondary btn-sm m-2"
-          onClick={this.handleSave}
+          onClick={this.handleClick}
         >
           return home page
         </button>
