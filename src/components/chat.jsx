@@ -1,34 +1,47 @@
 import React, { Component } from "react";
 import MessageBox from "./messageBox";
 class Chat extends Component {
-  messages = ["salam", "khooobi ?yaaaaaaaaaaaaaaaaaa khooobi ?yaaaaaaaaaaaaaaaaaa khooobi ?yaaaaaaaaaaaaaaaaaa khooobi ?yaaaaaaaaaaaaaaaaaakhooobi ?yaaaaaaaaaaaaaaaaaa khooobi ?yaaaaaaaaaaaaaaaaaa khooobi ?yaaaaaaaaaaaaaaaaaa khooobi ?yaaaaaaaaaaaaaaaaaa","salam","yohooo", "khooobi ?yaaaaaaaaaaaaaaaaaa khooobi ?yaaaaaaaaaaaaaaaaaa khooobi ?yaaaaaaaaaaaaaaaaaa khooobi ?yaaaaaaaaaaaaaaaaaakhooobi ?yaaaaaaaaaaaaaaaaaa khooobi ?yaaaaaaaaaaaaaaaaaa khooobi ?yaaaaaaaaaaaaaaaaaa khooobi ?yaaaaaaaaaaaaaaaaaa"];
+  state = { messages: [] };
+  message = React.createRef();
+
+  handleSubmitMessage = e => {
+    e.preventDefault();
+    const message = { text: this.message.current.value, _id: Date.now() };
+    const messages = [...this.state.messages, message];
+    this.setState({ messages });
+    this.message.current.value = null;
+  };
   render() {
     return (
-      <div>
-        <div class="chat_window">
-          <div class="top_menu">
-            <div class="buttons">
-              <div class="button close" />
-              <div class="button minimize" />
-              <div class="button maximize" />
+      <form onSubmit={this.handleSubmitMessage}>
+        <div className="chat_window">
+          <div className="top_menu">
+            <div className="buttons">
+              <div className="button minimize" />
+              <div className="button maximize" />
+              <div className="button close" />
             </div>
-            <div class="title">Chat</div>
+            <div className="title">Chat</div>
           </div>
-          <MessageBox messages={this.messages} />
-          <div class="bottom_wrapper clearfix">
-            <div class="message_input_wrapper">
+          <MessageBox messages={this.state.messages} />
+          <div className="bottom_wrapper clearfix">
+            <div className="message_input_wrapper">
               <input
-                class="message_input"
+                autoFocus
+                ref={this.message}
+                type="text"
+                id="messageInput"
+                className="message_input"
                 placeholder="Type your message here..."
               />
             </div>
-            <div class="send_message">
-              <div class="icon" />
-              <div class="text">Send</div>
-            </div>
+            <button className="send_message">
+              <div className="icon" />
+              <div className="text">Send</div>
+            </button>
           </div>
         </div>
-      </div>
+      </form>
     );
   }
 }

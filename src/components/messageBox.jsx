@@ -5,11 +5,15 @@ class MessageBox extends Component {
     const { messages } = this.props;
     let location = true;
     return (
-      <ul class="messages">
+      <ul className="messages">
         {messages.map(item => {
           location = !location;
           return (
-            <MessageItem location={location ? "left" : "right"} text={item} />
+            <MessageItem
+              key={item._id}
+              location={location ? "left" : "right"}
+              text={item.text}
+            />
           );
         })}
       </ul>

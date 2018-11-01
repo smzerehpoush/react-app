@@ -10,9 +10,9 @@ class MoviesTable extends Component {
       path: "title",
       content: movie => <Link to={`/movies/${movie._id}`}>{movie.title} </Link>
     },
-    { path: "genre", lable: "Genre" },
+    { path: "genre.name", lable: "Genre" },
     { path: "numberInStock", lable: "Stock" },
-    { path: "dailyRentalRate", lable: "Rent" },
+    { path: "dailyRentalRate", lable: "Rate" },
     {
       key: "like",
       content: movie => (
@@ -39,12 +39,15 @@ class MoviesTable extends Component {
     return movies.length === 0 ? (
       <p>There are no movies in table</p>
     ) : (
-      <Table
-        columns={this.columns}
-        data={movies}
-        sortColumn={sortColumn}
-        onSort={onSort}
-      />
+      <div>
+        <p>There are {movies.length} movies in table</p>
+        <Table
+          columns={this.columns}
+          data={movies}
+          sortColumn={sortColumn}
+          onSort={onSort}
+        />
+      </div>
     );
   }
 }
