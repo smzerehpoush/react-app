@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { NavLink, Link } from "react-router-dom";
+
 class NavBar extends Component {
   render() {
     const { items, activeItem, onSelect } = this.props;
