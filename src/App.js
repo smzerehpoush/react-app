@@ -3,7 +3,7 @@ import { Route, Redirect, Switch } from "react-router-dom";
 import { getMovies, saveMovie } from "./services/fakeMovieService";
 import { getGenres } from "./services/fakeGenreService";
 import Movies from "./components/movies";
-import NavBar from "./components/common/navbar";
+import NavBar from "./components/navbar";
 import Customers from "./components/customers";
 import Rentals from "./components/rentals.";
 import NotFound from "./components/notFound";
